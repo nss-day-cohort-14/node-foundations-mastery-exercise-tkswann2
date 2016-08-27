@@ -12,9 +12,9 @@ const [,,...cliArgs] = process.argv
 
 const limiter = map((line, cb) => {
                   //do something with the line
-                  if ( line.toString().startsWith(cliArgs[0]) ) {
+                  if ( line.toString().toLowerCase().startsWith(cliArgs[0].toLowerCase()) ) {
                     // console.log(line.toString())
-                    cb(null, line.toString())
+                    cb(null, `${line.toString()}\n`)
                   }
                   cb()
                 })
