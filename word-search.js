@@ -1,18 +1,35 @@
 #!/usr/bin/env node
-const { createReadStream, writeStream } = require('fs')
-const { Writable } = require('stream')
+'use strict'
+
+// node/3rd party modules
+const { createReadStream } = require('fs')
 const { split, map } = require('event-stream')
-const blah = require('./limit-ten')
+const [,,...cliArgs] = process.argv
+
+// my modules
+const limitToTen = require('./limit-ten')
 
 
-// const wordList = createReadStream('/usr/share/dict/words', 'utf8')
-
-// wordList.pipe(split()).pipe(process.stdout)
-const readStream = createReadStream('/usr/share/dict/words')
-// const writeStream = Writable({
-// })
-
-readStream
-  .pipe(split())
-  .pipe(blah)
-  .pipe(process.stdout)
+if (cliArgs[0]) {
+  // const readStream = createReadStream('/usr/share/dict/words')
+  //
+  // // piping
+  // readStream
+process.stdin
+    .pipe(split())
+    .pipe(map((line, cb) => {
+            // convert input and stream to lowercase for testing purposes
+            // test to see if the word in stream begins with the cli argument
+            // pass data down stream if they match
+            if ( line.toString().toLowerCase().startsWith(cliArgs[0].toLowerCase()) ) {
+              cb(null, `${line.toString()}\n`)
+            } else {
+              // drop data that doesn't match user input
+              cb()
+            }
+          }))
+    .pipe(limitToTen)
+    .pipe(process.stdout)
+} else {
+    console.log('No arguments found!\nUsage: word-search [search term]')
+}

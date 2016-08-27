@@ -1,24 +1,19 @@
+'use strict'
+
 const { Transform } = require('stream')
-const { split, map } = require('event-stream')
-const [,,...cliArgs] = process.argv
 
-// const limiter = Transform({
-//   transform(buf, _, cb) {
-//     // console.log(buf.toString())
-//
-//     setTimeout(() => {cb(null, `${buf.toString()}\n`)}, 500)
-//   }
-// })
+let i = 0
+const limitToTen = Transform({
+  transform(buf, _, cb){
+    if (i < 10) {
+      i++
+      cb(null, buf.toString())
+    } else {
+      // drop data after 10 iterations
+      cb()
+    }
+  }
 
-const limiter = map((line, cb) => {
-                  //do something with the line
-                  if ( line.toString().toLowerCase().startsWith(cliArgs[0].toLowerCase()) ) {
-                    // console.log(line.toString())
-                    cb(null, `${line.toString()}\n`)
-                  }
-                  cb()
-                })
+})
 
-
-
-module.exports = limiter
+module.exports = limitToTen
