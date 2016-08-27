@@ -11,11 +11,11 @@ const limitToTen = require('./limit-ten')
 
 
 if (cliArgs[0]) {
-  // const readStream = createReadStream('/usr/share/dict/words')
-  //
-  // // piping
-  // readStream
-process.stdin
+  const readStream = createReadStream('/usr/share/dict/words')
+// piping
+  readStream
+// bonus #1
+// process.stdin
     .pipe(split())
     .pipe(map((line, cb) => {
             // convert input and stream to lowercase for testing purposes
