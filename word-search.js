@@ -2,16 +2,18 @@
 'use strict'
 
 // node/3rd party modules
-const { createReadStream } = require('fs')
-const { split, map } = require('event-stream')
-const [,,...cliArgs] = process.argv
+const { createReadStream } = require('fs'),
+            { split, map } = require('event-stream'),
+            [,,...cliArgs] = process.argv,
 
 // my modules
-const limitToTen = require('./limit-ten')
+                limitToTen = require('./limit-ten'),
+               hackerTyper = require('./hacker-typer')
 
-
+// if cli arguments are passed run this code block
 if (cliArgs[0]) {
-  const readStream = createReadStream('/usr/share/dict/words')
+  const   wordList = '/usr/share/dict/words',
+        readStream = createReadStream(wordList)
 // piping
   readStream
 // bonus #1
@@ -29,6 +31,7 @@ if (cliArgs[0]) {
             }
           }))
     .pipe(limitToTen)
+    // .pipe(hackerTyper)
     .pipe(process.stdout)
 } else {
     console.log('No arguments found!\nUsage: word-search [search term]')
