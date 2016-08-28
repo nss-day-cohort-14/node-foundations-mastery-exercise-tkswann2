@@ -4,7 +4,7 @@ const { Transform } = require('stream')
 
 let i = 0
 const limitToTen = Transform({
-  transform(buf, _, cb){
+  transform(buf, _, cb) {
     if (i < 10) {
       i++
       cb(null, buf.toString())

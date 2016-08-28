@@ -31,8 +31,8 @@ if (cliArgs[0]) {
             }
           }))
     .pipe(limitToTen)
-    // .pipe(hackerTyper)
-    .pipe(process.stdout)
+    .pipe(hackerTyper) // either/or hackerTyper/stdout. Not both
+    // .pipe(process.stdout)
 } else {
     console.log('No arguments found!\nUsage: word-search [search term]')
 }
